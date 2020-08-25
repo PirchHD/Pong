@@ -119,7 +119,7 @@ namespace Pong {
 			this->labelL->AutoSize = true;
 			this->labelL->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 72, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(238)));
-			this->labelL->Location = System::Drawing::Point(207, 9);
+			this->labelL->Location = System::Drawing::Point(646, 36);
 			this->labelL->Name = L"labelL";
 			this->labelL->Size = System::Drawing::Size(99, 108);
 			this->labelL->TabIndex = 3;
@@ -130,7 +130,7 @@ namespace Pong {
 			this->labelR->AutoSize = true;
 			this->labelR->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 72, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(238)));
-			this->labelR->Location = System::Drawing::Point(658, 9);
+			this->labelR->Location = System::Drawing::Point(181, 27);
 			this->labelR->Name = L"labelR";
 			this->labelR->Size = System::Drawing::Size(99, 108);
 			this->labelR->TabIndex = 4;
@@ -164,6 +164,7 @@ namespace Pong {
 		char DirectionLeft, DirectionRight;
 
 		char Where;
+		bool MoveBall = false;
 
 		int PointsL = 0, PointsR = 0;
 
@@ -183,16 +184,28 @@ namespace Pong {
 		//lewa platforma
 		if ((DirectionLeft == 'W') && platformleft->Top >= 0) {
 			platformleft->Top -= 20;
+			if (Where == 'L' && MoveBall == false) {
+				ball->Top -= 20;
+			}
 		}
 		if ((DirectionLeft == 'S') && (platformleft->Bottom < MyForm::Height - platformleft->Height/2 + 15 )) {
 			platformleft->Top += 20;
+			if (Where == 'L' && MoveBall == false) {
+				ball->Top += 20;
+			}
 		}
 		// PRAWA PLATFORMA
 		if ((DirectionRight == 'U') && platformright->Top >= 0 ) {
 			platformright->Top -= 20;
+			if (Where == 'R' && MoveBall == false) {
+				ball->Top -= 20;
+			}
 		}
 		if ((DirectionRight == 'D') && (platformright->Bottom < MyForm::Height - platformleft->Height / 2 + 15)) {
 			platformright->Top += 20;
+			if (Where == 'R' && MoveBall == false) {
+				ball->Top += 20;
+			}
 		}
 
 		//ODBIJANIE
@@ -210,25 +223,28 @@ namespace Pong {
 
 			Where = 'R';
 			ball->Left = MyForm::Width  - 70;
-			ball->Top = MyForm::Height / 2;
+			ball->Top = MyForm::Height / 2 + platformright->Height/2;
 
 			platformright->Left = MyForm::Width- 50;
 			platformright -> Top = MyForm::Height / 2;
 			PointsR += 1;
 			moveX = 0; moveY = 0;
 			labelR->Text = "" + PointsR;
+			MoveBall = false;
 		}
 		if (ball->Right <= 0) {
 
 			Where = 'L';
 			ball->Left = 30;
-			ball->Top = MyForm::Height / 2;
+			ball->Top = MyForm::Height / 2 + platformright->Height / 2;
 
 			platformleft->Left = 10;
 			platformleft->Top = MyForm::Height / 2;
 			PointsL += 1;
 			moveX = 0; moveY = 0;
 			labelL->Text = "" + PointsL;
+			MoveBall = false;
+
 		}
 
 	}
@@ -242,7 +258,8 @@ private: System::Void MovesPlatform(System::Object^ sender, System::Windows::For
 	if (e->KeyCode == Keys::S) DirectionLeft = 'S';
 
 	if (e->KeyCode == Keys::Space) {
-		if (Where == 'R') {
+		
+		if (Where == 'R' && MoveBall == false) {
 			moveX = -15;
 		}
 		else
@@ -250,11 +267,13 @@ private: System::Void MovesPlatform(System::Object^ sender, System::Windows::For
 			moveX = 15;
 		}
 		
+		MoveBall = true;
+		
 		moveY = 15;
 	}
 }
 private: System::Void MyForm_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-	DirectionLeft = '`'; DirectionRight = '`';
+	DirectionLeft = '`'; DirectionRight = '`'; 
 }
 
 };
