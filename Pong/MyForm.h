@@ -181,17 +181,17 @@ namespace Pong {
 		//if (ball->Left <= 5 ) moveX = -moveX;
 
 		//lewa platforma
-		if ((DirectionLeft == 'W') && platformleft->Top > 0) {
+		if ((DirectionLeft == 'W') && platformleft->Top >= 0) {
 			platformleft->Top -= 20;
 		}
-		if ((DirectionLeft == 'S') && (platformleft->Bottom < MyForm::Bottom - platformleft->Height - 10)) {
+		if ((DirectionLeft == 'S') && (platformleft->Bottom < MyForm::Height - platformleft->Height/2 + 15 )) {
 			platformleft->Top += 20;
 		}
 		// PRAWA PLATFORMA
-		if ((DirectionRight == 'U') && platformright->Top > 0 ) {
+		if ((DirectionRight == 'U') && platformright->Top >= 0 ) {
 			platformright->Top -= 20;
 		}
-		if ((DirectionRight == 'D') && (platformright->Bottom < MyForm::Bottom - platformright->Height - 10)) {
+		if ((DirectionRight == 'D') && (platformright->Bottom < MyForm::Height - platformleft->Height / 2 + 15)) {
 			platformright->Top += 20;
 		}
 
@@ -200,7 +200,7 @@ namespace Pong {
 			moveX = -moveX;
 			
 		}
-		if ((ball->Right < platformleft->Right + 2) && (ball->Top > platformleft->Top) && (ball->Top < platformleft->Bottom)) {
+		if ((ball->Left < platformleft->Right - 2) && (ball->Top > platformleft->Top) && (ball->Top < platformleft->Bottom)) {
 			moveX = -moveX;
 
 		}
